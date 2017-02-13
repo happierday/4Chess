@@ -1,0 +1,66 @@
+
+<canvas id = "canvas" width = "1000" height = "800"><</canvas>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    var x = 100, y = 160,size = 40;
+    for(var i = 1;i<=8;i++){
+       for(var j = 1;j<=4;j++){
+           ctx.beginPath();
+           ctx.rect(x+size*j, y+size*i, size, size);
+           if((i+j)%2 != 0) {
+               ctx.fillStyle = "#F5F5DC";
+           }else{
+               ctx.fillStyle = "#A9A9A9";
+           }
+           ctx.fill();
+        }
+    }
+
+    var y1 = y + size * 8;
+    var x1 = x+ size*4;
+
+    for(var i = 1;i<=4;i++){
+        for(var j = 1;j<=8;j++) {
+            ctx.beginPath();
+            ctx.rect(x1+j*size, y1+i*size, size, size);
+            if((i+j)%2 == 0) {
+                ctx.fillStyle = "#F5F5DC";
+            }else{
+                ctx.fillStyle = "#A9A9A9";
+            }
+            ctx.fill();
+        }
+    }
+
+    var x2 = x + size*4;
+    var y2 = y + size;
+    for(var i = 1;i<=4;i++){
+        for(var j = 1;j<=8;j++) {
+            ctx.beginPath();
+            ctx.rect(x2+j*size, y2-i*size, size, size);
+            if((i+j)%2 == 0) {
+                ctx.fillStyle = "#F5F5DC";
+            }else{
+                ctx.fillStyle = "#A9A9A9";
+            }
+            ctx.fill();
+        }
+    }
+
+    var x3 = x + size * 12;
+    var y3 = y;
+    for(var i = 1;i<=8;i++){
+        for(var j = 1;j<=4;j++){
+            ctx.beginPath();
+            ctx.rect(x3+size*j, y3+size*i, size, size);
+            if((i+j)%2 != 0) {
+                ctx.fillStyle = "#F5F5DC";
+            }else{
+                ctx.fillStyle = "#A9A9A9";
+            }
+            ctx.fill();
+        }
+    }
+</script>
