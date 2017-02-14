@@ -1,66 +1,40 @@
 
-<canvas id = "canvas" width = "1000" height = "800"><</canvas>
+<canvas id = "canvas" width = "1000" height = "1000"></canvas>
+
+
+
 
 <script>
+
+    var board = [];
     const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    var x = 100, y = 160,size = 40;
-    for(var i = 1;i<=8;i++){
-       for(var j = 1;j<=4;j++){
-           ctx.beginPath();
-           ctx.rect(x+size*j, y+size*i, size, size);
-           if((i+j)%2 != 0) {
-               ctx.fillStyle = "#F5F5DC";
-           }else{
-               ctx.fillStyle = "#A9A9A9";
-           }
-           ctx.fill();
-        }
-    }
-
-    var y1 = y + size * 8;
-    var x1 = x+ size*4;
-
-    for(var i = 1;i<=4;i++){
-        for(var j = 1;j<=8;j++) {
-            ctx.beginPath();
-            ctx.rect(x1+j*size, y1+i*size, size, size);
-            if((i+j)%2 == 0) {
-                ctx.fillStyle = "#F5F5DC";
+    var ctx = canvas.getContext("2d");
+    var x = 100,  y= 160;
+    var size = 40;
+    var posX = x, posY = y;
+    for(var k = 0; k< 16 ; k++) board[k] = [];
+    for(var i = 0; i < 16; i++){
+        for(var j = 0; j < 16; j++){
+            posX = x + size *j;
+            posY = y + size *i;
+            if((j < 4 || j > 11) && (i<4 ||i>11)){
+                board[i][j] = -1;
             }else{
-                ctx.fillStyle = "#A9A9A9";
+                board[i][j] = 1;
+                //var ctx = id.getContext("2d");
+                ctx.beginPath();
+                ctx.rect(posX, posY, size, size);
+                if((i+j)%2 != 0) {
+                    ctx.fillStyle = "#F5F5DC";
+                }else{
+                    ctx.fillStyle = "#A9A9A9";
+                }
+                ctx.fill();
             }
-            ctx.fill();
+
         }
     }
 
-    var x2 = x + size*4;
-    var y2 = y + size;
-    for(var i = 1;i<=4;i++){
-        for(var j = 1;j<=8;j++) {
-            ctx.beginPath();
-            ctx.rect(x2+j*size, y2-i*size, size, size);
-            if((i+j)%2 == 0) {
-                ctx.fillStyle = "#F5F5DC";
-            }else{
-                ctx.fillStyle = "#A9A9A9";
-            }
-            ctx.fill();
-        }
-    }
-
-    var x3 = x + size * 12;
-    var y3 = y;
-    for(var i = 1;i<=8;i++){
-        for(var j = 1;j<=4;j++){
-            ctx.beginPath();
-            ctx.rect(x3+size*j, y3+size*i, size, size);
-            if((i+j)%2 != 0) {
-                ctx.fillStyle = "#F5F5DC";
-            }else{
-                ctx.fillStyle = "#A9A9A9";
-            }
-            ctx.fill();
-        }
-    }
+    //const canvas = document.getElementById("canvas");
+    //draw(canvas ,100,160,40);
 </script>
