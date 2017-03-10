@@ -18,6 +18,9 @@ app.use(serveStatic(__dirname + '/object'));
 
 const game = require('./controller/game');
 //const profile = require('./controller/profile');
+app.get('/',function(req,res){
+  res.send('this is main page')
+})
 app.use('/game',game);
 //app.use('/profile',profile);
 

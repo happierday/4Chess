@@ -1,100 +1,72 @@
-
 <canvas id = "canvas" width = "1000" height = "1000"></canvas>
 
-
-
-
 <script>
-
-    class piece{
-        constuctor(name,px,py) {
-            this.name = name;
-            this.px = px;
-            this.py = py;
-        }
-    }
-
-    class knight extends piece{
-        constructor(name,px,py) {
-            super(name, px, py);
-        }
-        move(){
-
-        }
-    }
-
-    class Square{
-
-        constructor(row,col,ctx,px,py){
-            this.row = row;
-            this.col = col;
-            this.ctx = ctx;
-            this.px = px;
-            this.py = py;
-        }
-        draw(){
-            if((i+j)%2 != 0) {
-                    ctx.fillStyle = "#F5F5DC";
-                }else{
-                    ctx.fillStyle = "#A9A9A9";
-            }
-        }
-
-        putPiece(img,px,py){
-            this.img = img;
-            ctx.drawImage(img,px,py,40,40);
-        }
-    }
-
+    /*
     var board = [];
+    for(var i = 0; i< 16 ; i++) {
+        board[i] = [];
+        for(var j = 0; j < 16 ; j++){
+
+        }
+    }
+    */
+    var click = false;
+    var x = 80;
+    var y = 80;
+    var posX, posY;
+    var size = 40;
     const canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-    var x = 100,  y= 160;
-    var size = 40;
-    var posX = x, posY = y;
-    for(var k = 0; k< 16 ; k++) board[k] = [];
-    for(var i = 0; i < 16; i++){
-        for(var j = 0; j < 16; j++){
-            posX = x + size *j;
-            posY = y + size *i;
-            if((j < 4 || j > 11) && (i<4 ||i>11)){
-                board[i][j] = -1;
-                //board[i][j] = new Square(i,j,ctx)
-                //board[i][j].draw();
-            }else{
-            
-                //board[i][j] = 1;
-                //var ctx = id.getContext("2d");
+    /*
+    function move(event){
+        if((event.layerX <= 320 && event.layerX >= 280) && (event.layerY <= 360 && event.layerY >= 320)) {
+            ctx.beginPath();
+            ctx.rect(240, 240, size, size);
+
+            ctx.fillStyle = "#A9A9A9";
+
+            ctx.fill();
+            ctx.drawImage(knightImg, 280, 320, 40, 40);
+            //console.log("clicked");
+        }
+    }
+    */
+    function hasPiece(event){
+        //console.log(event);
+        //console.log(event.clientX + " " + event.clientY);
+        if((event.layerX <= 280 && event.layerX >= 240) && (event.layerY <= 280 && event.layerY >= 240)) {
+            //ctx.onclick = move();
+            ctx.beginPath();
+            ctx.rect(240, 240, size, size);
+
+            ctx.fillStyle = "#A9A9A9";
+
+            ctx.fill();
+            ctx.drawImage(knightImg, 280, 320, 40, 40);
+        }
+    }
+
+    for(var i = 0; i < 16 ; i++){
+        posY = y + size * i;
+        for (var j = 0; j < 16 ; j++){
+            posX = x + size * j;
+            if(!((j < 4 || j > 11) && (i<4 ||i>11))) {
                 ctx.beginPath();
                 ctx.rect(posX, posY, size, size);
-                /*if((i+j)%2 != 0) {
+                if ((i + j) % 2 != 0) {
                     ctx.fillStyle = "#F5F5DC";
-                }else{
+                } else {
                     ctx.fillStyle = "#A9A9A9";
                 }
-                */
-                board[i][j] = new Square(i,j,ctx,posX,posY);
-                board[i][j].draw();
                 ctx.fill();
             }
-
         }
-
+        posX = 80;
     }
-    //console.log(board[6][5].x + " " + board[7][8].y);
-    console.log(board[7][8].px + " " + board[7][8].py);
     var knightImg = document.createElement('img');
-    //board[7][8].putPiece(knightImg);
     knightImg.src = 'knight.png';
-    function show(event) {
-        if((event.clientX > 420 || event.clientX <460) && (event.clientY> 440 || event.clientY <480)){
-            console.log("clicked");
-        //console.log(event);
-        }
-    }
     knightImg.onload = function() {
-        board[7][8].putPiece(knightImg,board[7][8].px,board[7][8].py);
-        //knightImg.onclick = show;  
+        ctx.drawImage(knightImg,240,240,40,40);
     }
-    canvas.onclick = show;
+    canvas.onclick = hasPiece;
 </script>
