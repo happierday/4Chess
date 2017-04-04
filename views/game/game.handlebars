@@ -1,10 +1,11 @@
 <canvas id = "canvas" width = "1000" height = "1000"></canvas>
 
 <script src = "/piece.js"></script>
+<script src = "/clickedEffect.js"></script>
 <script>
     //var selected = false;
     var posX, posY;
-    var pieceSelected = [];
+    var pieceSelected;
     const canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var size = 40;
@@ -14,54 +15,26 @@
 
     var knightImg = document.createElement('img');
     knightImg.src = 'knight.png';
-    /*
-    class Piece{
-        constructor(x,y,value){
-            this.x = x;
-            this.y = y;
-            this.posX = x * size + size;
-            this.posY = y * size + size;
-            this.selected = false;
-            this.hasPiece = false;
 
-        }
-        resetSelect(){
-            this.selected = false;
-        }
-        setHasPiece(state){
-            this.hasPiece = state;
-        }
-        drawImg(obj){
-            this.hasPiece = true;
-            ctx.drawImage(obj,this.posX,this.posY,size,size);
-        }
-    }
-    */
     for(var i = 0; i< 16 ; i++) {
         board[i] = [];
         for(var j = 0; j<16;j++){
             board[i][j] = new Piece(i,j,-1);
         }
     }
-
-    //pieceSelected = board[4][4];
     knightImg.onload = function() {
         board[4][4].drawImg(knightImg);
     }
-    //board[0][0].location();
     function move(event){
         var tempX = Math.floor(event.layerX/size)-1;
         var tempY = Math.floor(event.layerY/size)-1;
         var tempPiece = board[tempX][tempY];
-        //console.log(tempX + " " + tempY);
         if(board[tempX][tempY].hasPiece){
             pieceSelected = board[tempX][tempY];
-            //console.log(tempPiece.hasPiece);
-            //console.log('selected');
             board[tempX][tempY].selected = true;
+            clickedEffect(pieceSelected.posX,pieceSelected.posY,ctx,size);
+            ctx.drawImage(knightImg, pieceSelected.posX, pieceSelected.posY, size, size);
         }else{
-            //console.log(tempX + " " + tempY);
-            //console.log(pieceSelected.selected);
             if(pieceSelected.selected){
                 if(!((tempY < 4 || tempY > 11) && (tempX<4 ||tempX>11))) {
                     if (((Math.abs(tempX - pieceSelected.x) == 1) && Math.abs(tempY - pieceSelected.y) == 2)
@@ -74,7 +47,6 @@
                         } else {
                             ctx.fillStyle = "#A9A9A9";
                         }
-
                         ctx.fill();
                         ctx.drawImage(knightImg, tempPiece.posX, tempPiece.posY, size, size);
                         board[tempX][tempY].hasPiece = true;
@@ -86,26 +58,6 @@
                 }
             }
         }
-        /*
-        if(!board[tempX][tempY].selected) {
-            if ((event.layerX <= 280 && event.layerX >= 240) && (event.layerY <= 280 && event.layerY >= 240)) {
-                //ctx.onclick = move();
-                selected = true;
-            }
-        }else{
-            if ((event.layerX <= 320 && event.layerX >= 280) && (event.layerY <= 360 && event.layerY >= 320)) {
-                ctx.beginPath();
-                ctx.rect(240, 240, size, size);
-
-                ctx.fillStyle = "#A9A9A9";
-
-                ctx.fill();
-                ctx.drawImage(knightImg, 280, 320, 40, 40);
-                selected = false;
-            }
-        }
-        */
-
     }
 
     for(var i = 0; i < 16 ; i++){
@@ -125,12 +77,5 @@
         }
         posX = 80;
     }
-
-    /*
-    knightImg.onload = function() {
-        ctx.drawImage(knightImg,240,240,40,40);
-    }
-    */
-    //canvas.ondblclick = hasPiece;
     canvas.onclick = move;
 </script>
