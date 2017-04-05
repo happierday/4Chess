@@ -4,6 +4,12 @@ const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 
 const app = express();
+
+//const server = require('http').createServer(app);
+//const io = require('../..')(server);
+//const port = process.env.PORT ||8000;
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
