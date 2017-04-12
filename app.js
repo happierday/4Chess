@@ -5,9 +5,18 @@ const serveStatic = require('serve-static');
 
 const app = express();
 
-//const server = require('http').createServer(app);
-//const io = require('../..')(server);
-//const port = process.env.PORT ||8000;
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+io.on('connection', function(socket){
+  socket.on('update board', function(piece){
+    io.emit('update board',piece);
+  });
+});
+
+server.listen(8000,function(){
+  console.log('listening on');
+})
 
 
 app.use(bodyParser.json());
@@ -29,8 +38,7 @@ const game = require('./controller/game');
 app.get('/',function(req,res){
   res.send('this is main page')
 })
+
 app.use('/game',game);
-//app.use('/profile',profile);
 
 module.exports = app;
-app.listen(8000);

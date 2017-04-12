@@ -2,8 +2,9 @@
 
 <script src = "/piece.js"></script>
 <script src = "/clickedEffect.js"></script>
+<script src = "/moveEvent.js"></script>
 <script>
-    //var selected = false;
+    var socket = io();
     var posX, posY;
     var pieceSelected;
     const canvas = document.getElementById("canvas");
@@ -12,6 +13,27 @@
     var x = 40;
     var y = 40;
     var board = [];
+    var temp ;
+
+    socket.on('update board',function(piece){
+        console.log(piece.x,piece.y);
+
+        if(board[piece.fromX][piece.fromY].hasPiece){
+            temp = board[piece.fromX][piece.fromY];
+            temp.drawImgUpdate(temp.obj,temp.team,piece.posX,piece.posY);
+            board[piece.toX][piece.toY].updatePiece(temp);
+            ctx.beginPath();
+            ctx.rect(temp.posX, temp.posY, size, size);
+            if ((temp.x + temp.y) % 2 != 0) {
+                ctx.fillStyle = "#F5F5DC";
+            } else {
+                ctx.fillStyle = "#A9A9A9";
+            }
+            ctx.fill();
+            temp.resetPiece();
+            temp = 0;
+        }
+    })
 
     var knightImg = document.createElement('img');
     knightImg.src = 'knight.png';
@@ -55,13 +77,15 @@
                         ctx.fill();
                         ctx.drawImage(pieceSelected.obj, tempPiece.posX, tempPiece.posY, size, size);
                         board[tempX][tempY].updatePiece(pieceSelected);
+                        board[tempX][tempY].setMoveFrom(pieceSelected.x,pieceSelected.y);
+                        board[tempX][tempY].setMoveTo(tempX,tempY);
                         pieceSelected.resetPiece();
+                        socket.emit('update board',board[tempX][tempY]);
                     }
                 }
             }
         }
     }
-
     for(var i = 0; i < 16 ; i++){
         posY = y + size * i;
         for (var j = 0; j < 16 ; j++){
@@ -80,4 +104,5 @@
         posX = 80;
     }
     canvas.onclick = move;
+
 </script>
