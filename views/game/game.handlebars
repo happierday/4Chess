@@ -1,3 +1,12 @@
+<div>
+    <p>Total Player</p>
+    <p id = 'player'></p>
+    <p id = 'current'></p>
+    <p>room</p>
+    <p id = 'room'></p>
+    <H1 id = 'start'></H1>
+</div>
+
 <canvas id = "canvas" width = "1000" height = "1000"></canvas>
 
 <script src = "/piece.js"></script>
@@ -14,25 +23,46 @@
     var y = 40;
     var board = [];
     var temp ;
+    var myRoomNum;
+    var myRoomName;
+    var once = false;
+
+
+
+
+    socket.on('total player',function(totalPlayer){
+        //console.log(totalPlayer);
+        document.getElementById("player").innerHTML = totalPlayer;
+    })
+
+    socket.on('room number', function (room) {
+        if(!once) {
+            myRoomNum = room.roomID;
+            myRoomName = room.roomName;
+            document.getElementById("room").innerHTML = myRoomNum;
+            document.getElementById("current").innerHTML = room.currentPlayer;
+        }
+        once = true;
+    })
 
     socket.on('update board',function(piece){
-        console.log(piece.x,piece.y);
+            console.log(piece.x, piece.y);
 
-        if(board[piece.fromX][piece.fromY].hasPiece){
-            temp = board[piece.fromX][piece.fromY];
-            temp.drawImgUpdate(temp.obj,temp.team,piece.posX,piece.posY);
-            board[piece.toX][piece.toY].updatePiece(temp);
-            ctx.beginPath();
-            ctx.rect(temp.posX, temp.posY, size, size);
-            if ((temp.x + temp.y) % 2 != 0) {
-                ctx.fillStyle = "#F5F5DC";
-            } else {
-                ctx.fillStyle = "#A9A9A9";
+            if (board[piece.fromX][piece.fromY].hasPiece) {
+                temp = board[piece.fromX][piece.fromY];
+                temp.drawImgUpdate(temp.obj, temp.team, piece.posX, piece.posY);
+                board[piece.toX][piece.toY].updatePiece(temp);
+                ctx.beginPath();
+                ctx.rect(temp.posX, temp.posY, size, size);
+                if ((temp.x + temp.y) % 2 != 0) {
+                    ctx.fillStyle = "#F5F5DC";
+                } else {
+                    ctx.fillStyle = "#A9A9A9";
+                }
+                ctx.fill();
+                temp.resetPiece();
+                temp = 0;
             }
-            ctx.fill();
-            temp.resetPiece();
-            temp = 0;
-        }
     })
 
     var knightImg = document.createElement('img');
@@ -80,7 +110,7 @@
                         board[tempX][tempY].setMoveFrom(pieceSelected.x,pieceSelected.y);
                         board[tempX][tempY].setMoveTo(tempX,tempY);
                         pieceSelected.resetPiece();
-                        socket.emit('update board',board[tempX][tempY]);
+                        socket.emit('update board',board[tempX][tempY],myRoomName);
                     }
                 }
             }
@@ -103,6 +133,15 @@
         }
         posX = 80;
     }
-    canvas.onclick = move;
+
+    socket.on('start',function(start){
+        if(start) {
+            document.getElementById('start').innerHTML = 'Game Started';
+            canvas.onclick = move;
+        }else{
+            document.getElementById('start').innerHTML = 'waiting';
+        }
+    })
+
 
 </script>
