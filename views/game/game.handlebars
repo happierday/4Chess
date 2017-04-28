@@ -13,19 +13,19 @@
 <script src = "/clickedEffect.js"></script>
 <script src = "/moveEvent.js"></script>
 <script>
-    var socket = io();
-    var posX, posY;
-    var pieceSelected;
+    let socket = io();
+    let posX, posY;
+    let pieceSelected;
     const canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    var size = 40;
-    var x = 40;
-    var y = 40;
-    var board = [];
-    var temp ;
-    var myRoomNum;
-    var myRoomName;
-    var once = false;
+    let ctx = canvas.getContext("2d");
+    let size = 40;
+    let x = 40;
+    let y = 40;
+    let board = [];
+    let temp ;
+    let myRoomNum;
+    let myRoomName;
+    let once = false;
 
 
 
@@ -47,7 +47,6 @@
 
     socket.on('update board',function(piece){
             console.log(piece.x, piece.y);
-
             if (board[piece.fromX][piece.fromY].hasPiece) {
                 temp = board[piece.fromX][piece.fromY];
                 temp.drawImgUpdate(temp.obj, temp.team, piece.posX, piece.posY);
@@ -65,15 +64,15 @@
             }
     })
 
-    var knightImg = document.createElement('img');
+    let knightImg = document.createElement('img');
     knightImg.src = 'knight.png';
 
-    var blackKnight = document.createElement('img');
+    let blackKnight = document.createElement('img');
     blackKnight.src = 'blackKnight.png';
 
-    for(var i = 0; i< 16 ; i++) {
+    for(let i = 0; i< 16 ; i++) {
         board[i] = [];
-        for(var j = 0; j<16;j++){
+        for(let j = 0; j<16;j++){
             board[i][j] = new Piece(i,j,size,ctx);
         }
     }
@@ -84,9 +83,9 @@
         board[0][5].drawImg(knightImg,2);
     }
     function move(event){
-        var tempX = Math.floor(event.layerX/size)-1;
-        var tempY = Math.floor(event.layerY/size)-1;
-        var tempPiece = board[tempX][tempY];
+        let tempX = Math.floor(event.layerX/size)-1;
+        let tempY = Math.floor(event.layerY/size)-1;
+        let tempPiece = board[tempX][tempY];
         if(board[tempX][tempY].hasPiece){
             pieceSelected = board[tempX][tempY];
             pieceSelected.selected = true;
@@ -116,9 +115,9 @@
             }
         }
     }
-    for(var i = 0; i < 16 ; i++){
+    for(let i = 0; i < 16 ; i++){
         posY = y + size * i;
-        for (var j = 0; j < 16 ; j++){
+        for (let j = 0; j < 16 ; j++){
             posX = x + size * j;
             if(!((j < 4 || j > 11) && (i<4 ||i>11))) {
                 ctx.beginPath();
